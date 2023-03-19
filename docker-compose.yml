@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  mysqlserverdb:
+    container_name: mysqlserverdb
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ojasdb
+    networks:
+      springboot-mysql-network:
+
+
+  springboot-restful-webservices:
+    container_name: springboot-restful-webservices
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqlserverdb
+    networks:
+      springboot-mysql-network:
+    restart: on-failure
+
+networks:
+  springboot-mysql-network:
